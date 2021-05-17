@@ -28,12 +28,14 @@ namespace Connect4
         ImageBrush backgroundimage = new ImageBrush();
         List<Rectangle> itemsToClear = new List<Rectangle>();
 
+        
+
         int time;
-        int[,] cells = {{0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }};
+        int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 0, 0 }, { 0, 2, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
         int cellSize = 100;
         int boardWidth = 7; //Detta är samma sak som "width" från planeringen
         int boardHeight = 6; //Detta är samma sak som "height" från planeringen
-        int boardStartX = 10;
+        int boardStartX = (int) (0.5 * (1000 - 7 * 100)); // 0.5 * (windowWidth - boardWidth * cellSize);
         int boardStartY = 10;
 
         public MainWindow()
@@ -124,6 +126,7 @@ namespace Connect4
         }
         public void drawBoard(){
 
+            //cells
             for (int x = 0; x < boardWidth; x++)
             {
                 for (int y = 0; y < boardHeight; y++)
@@ -145,7 +148,37 @@ namespace Connect4
                     Connect4.Children.Add(newCell);
                 }
             }
-            
+
+            //piece
+            for (int x = 0; x < boardWidth; x++)
+            {
+                for (int y = 0; y < boardHeight; y++)
+                {
+                    ImageBrush CellImage = new ImageBrush();
+                    if (cells[x,y] == 1) // kanske ska göra en switch case
+                    {
+                        CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/bluepiece.png"));
+                    }
+                    else if(cells[x,y] == 2)
+                    {
+                        CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/redpiece.png"));
+                    }
+
+                    Rectangle newCell = new Rectangle
+                    {
+                        Tag = "cell",
+                        Height = cellSize,
+                        Width = cellSize,
+                        Fill = CellImage
+                    };
+
+                    Canvas.SetLeft(newCell, boardStartX + cellSize * x);
+                    Canvas.SetBottom(newCell, boardStartY + cellSize * y);
+
+                    Connect4.Children.Add(newCell);
+                }
+            }
+
         }
 
         private void PlacePiece(object sender, MouseButtonEventArgs e)
