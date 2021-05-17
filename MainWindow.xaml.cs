@@ -23,19 +23,27 @@ namespace Connect4
     public partial class MainWindow : Window
     {
         DispatcherTimer gameTimer = new DispatcherTimer();
-
+        Random rand = new Random();
         MediaPlayer player = new MediaPlayer();
         ImageBrush backgroundimage = new ImageBrush();
+        List<Rectangle> itemsToClear = new List<Rectangle>();
 
         int time;
         int[,] cells = {{0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }};
+        int cellSize = 100;
+        int boardWidth = 7; //Detta är samma sak som "width" från planeringen
+        int boardHeight = 6; //Detta är samma sak som "height" från planeringen
+        int boardStartX = 10;
+        int boardStartY = 10;
+
         public MainWindow()
         {
             InitializeComponent();
             
             gameTimer.Tick += GameEngine;
             gameTimer.Interval = TimeSpan.FromMilliseconds(17);
-
+            gameTimer.Start();
+            
             /*
             backgroundimage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/cell.png"));
             Connect4.Background = backgroundimage;
@@ -44,17 +52,21 @@ namespace Connect4
         //test
         private void GameEngine(object sender, EventArgs e)
         {
-            Time1.Content = "Score";
             //Time1.Content = "Score: " + time;
             //time++;
-            //drawBoard();
-            
+            removeBoard();
+            drawBoard();
         }
 
         public void removeBoard(){
             foreach (var x in Connect4.Children.OfType<Rectangle>())
             {
-                Connect4.Children.Remove(x);
+                itemsToClear.Add(x);
+                //Connect4.Children.Remove(x);
+            }
+            foreach (Rectangle y in itemsToClear)
+            {
+                Connect4.Children.Remove(y);
             }
         }
 
@@ -107,24 +119,33 @@ namespace Connect4
                     }
                 }
             }
+
+            return false;
         }
         public void drawBoard(){
 
-            ImageBrush CellImage = new ImageBrush();
-            CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/cell.png"));
-
-            Rectangle newCell = new Rectangle
+            for (int x = 0; x < boardWidth; x++)
             {
-                Tag = "cell",
-                Height = 50,
-                Width = 50,
-                Fill = CellImage
-            };
+                for (int y = 0; y < boardHeight; y++)
+                {
+                    ImageBrush CellImage = new ImageBrush();
+                    CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/cell.png"));
 
-            Canvas.SetLeft(newCell, 600);
-            Canvas.SetTop(newCell, 600);
+                    Rectangle newCell = new Rectangle
+                    {
+                        Tag = "cell",
+                        Height = cellSize,
+                        Width = cellSize,
+                        Fill = CellImage
+                    };
 
-            Connect4.Children.Add(newCell);
+                    Canvas.SetLeft(newCell, boardStartX + cellSize * x);
+                    Canvas.SetBottom(newCell, boardStartY + cellSize * y);
+
+                    Connect4.Children.Add(newCell);
+                }
+            }
+            
         }
 
         private void PlacePiece(object sender, MouseButtonEventArgs e)
