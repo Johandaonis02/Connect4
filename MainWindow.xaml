@@ -10,5 +10,6 @@
     <Canvas Name="Connect4" MouseLeftButtonDown="PlacePiece" Background="White">
         <Label FontSize="24" Name="Time1" Content="Player 1 time left: 0" FontWeight="ExtraBlack" Canvas.Left="10" Canvas.Top="10" />
         <Label FontSize="24" Name="Time2" Content="Player 2 time left: 0" FontWeight="ExtraBlack" Canvas.Right="10" Canvas.Top="10" />
+        <Label FontSize="50" Name="WinText" Content="" FontWeight="ExtraBlack" Canvas.Left="340" Canvas.Top="10"/>
     </Canvas>
 </Window>
