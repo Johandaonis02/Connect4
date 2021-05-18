@@ -31,13 +31,14 @@ namespace Connect4
         
 
         int time;
-        int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 0, 0 }, { 0, 2, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
+        int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
         int cellSize = 100;
         int boardWidth = 7; //Detta är samma sak som "width" från planeringen
         int boardHeight = 6; //Detta är samma sak som "height" från planeringen
         int boardStartX = (int) (0.5 * (1000 - 7 * 100)); // 0.5 * (windowWidth - boardWidth * cellSize);
         int boardStartY = 10;
-
+        int turn = 0;
+        bool bjornMode = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -56,11 +57,33 @@ namespace Connect4
         {
             //Time1.Content = "Score: " + time;
             //time++;
-            removeBoard();
-            drawBoard();
+            RemoveBoard();
+            DrawBoard();
+
         }
 
-        public void removeBoard(){
+        public void DropPiece(int column)
+        {
+            for (int i = 0; i < boardHeight; i++)
+            {
+                if (cells[column, i] == 0)
+                {
+                    cells[column, i] = (turn % 2) + 1;
+                    
+
+                    if (TestIfWon((turn % 2) + 1))
+                    {
+                        Time1.Content = "a player won";
+                    }
+
+                    turn++;
+                    break;
+                }
+            }
+            
+
+        }
+        public void RemoveBoard(){
             foreach (var x in Connect4.Children.OfType<Rectangle>())
             {
                 itemsToClear.Add(x);
@@ -72,27 +95,28 @@ namespace Connect4
             }
         }
 
-        public bool TestIfWon()
+        public bool TestIfWon(int player)
         {
-            int player = 1; //Detta ska inte alltid vara 1 men jag fixar det sen.
-            bool FourInARow = true;
+            //int player = 1; //Detta ska inte alltid vara 1 men jag fixar det sen.
+            bool fourInARow = true;
 
             //row
             for (int x = 0; x < 4; x++)
             {
                 for (int y = 0; y < 6; y++)
                 {
-                    FourInARow = true;
+                    fourInARow = true;
                     
                     for (int xOffset = 0; xOffset < 4; xOffset++)
                     {
                         if(cells[x + xOffset, y] != player)
                         {
-                            FourInARow = false;
+                            fourInARow = false;
+                            break;
                         } 
                     }
                     
-                    if (FourInARow)
+                    if (fourInARow)
                     {
                         return (true);
                     }
@@ -105,17 +129,18 @@ namespace Connect4
             {
                 for (int y = 0; y < 3; y++)
                 {
-                    FourInARow = true;
+                    fourInARow = true;
 
                     for (int yOffset = 0; yOffset < 4; yOffset++)
                     {
-                        if (cells[x + yOffset, y] != player)
+                        if (cells[x, y + yOffset] != player)
                         {
-                            FourInARow = false;
+                            fourInARow = false;
+                            break;
                         }
                     }
 
-                    if (FourInARow)
+                    if (fourInARow)
                     {
                         return (true);
                     }
@@ -124,7 +149,7 @@ namespace Connect4
 
             return false;
         }
-        public void drawBoard(){
+        public void DrawBoard(){
 
             //cells
             for (int x = 0; x < boardWidth; x++)
@@ -184,6 +209,24 @@ namespace Connect4
         private void PlacePiece(object sender, MouseButtonEventArgs e)
         {
             Console.WriteLine("test");
+        }
+
+        private void HandleKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!bjornMode)
+            {
+                if (!e.IsRepeat && 34 < (int)(e.Key) && (int)(e.Key) < 42)
+                {
+                    DropPiece((int)(e.Key) - 35);
+                }
+            }
+            else
+            {
+                if (!e.IsRepeat && 33 < (int)(e.Key) && (int)(e.Key) < 41)
+                {
+                    DropPiece((int)(e.Key) - 34);
+                }
+            }
         }
     }
 }

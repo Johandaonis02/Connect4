@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Connect4"
         mc:Ignorable="d"
-        Title="Connect4" Height="800" Width="1000">
+        Title="Connect4" Height="800" Width="1000" KeyDown="HandleKeyDown">
 
     <Canvas Name="Connect4" MouseLeftButtonDown="PlacePiece" Background="White">
         <Label FontSize="24" Name="Time1" Content="Player 1 time left: 0" FontWeight="ExtraBlack" Canvas.Left="10" Canvas.Top="10" />
