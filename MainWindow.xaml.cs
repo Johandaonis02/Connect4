@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 using System.Windows.Threading;
 
@@ -28,10 +29,10 @@ namespace Connect4
         ImageBrush backgroundimage = new ImageBrush();
         List<Rectangle> itemsToClear = new List<Rectangle>();
 
-        
+        //int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
 
-        int time;
-        int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
+        int[,] cells = new int[7,6];
+
         int cellSize = 100;
         int boardWidth = 7; //Detta är samma sak som "width" från planeringen
         int boardHeight = 6; //Detta är samma sak som "height" från planeringen
@@ -39,10 +40,14 @@ namespace Connect4
         int boardStartY = 10;
         int turn = 0;
         bool bjornMode = false; //Sätt på för att göra björn glad.
-        double addTime = 10;
-        double timePlayer1 = 10; //startTime
-        double timePlayer2 = 10; //startTime
-        bool gameIsOn = true;
+        double addTime = 1;
+        static double startTime = 7;
+        bool reset = true;
+
+        double timePlayer1 = startTime; //startTime
+        double timePlayer2 = startTime; //startTime
+        bool gameIsOn = false;
+        int frame = 0;
 
 
         public MainWindow()
@@ -54,6 +59,15 @@ namespace Connect4
             gameTimer.Interval = TimeSpan.FromMilliseconds(17);
             gameTimer.Start();
             
+            DisplayTime();
+
+            
+
+
+            //Time1.Content = "Player 1 time left: " + timePlayer1;
+            //Time2.Content = "Player 2 time left: " + timePlayer2;
+
+
             /*
             backgroundimage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/cell.png"));
             Connect4.Background = backgroundimage;
@@ -72,8 +86,9 @@ namespace Connect4
             {
                 if (turn % 2 + 1 == 1)
                 {
-                    timePlayer1 -= 0.03125; //Det är inte exakt 60 fps. Behöver fixa tidsreduseringen
-                    Time1.Content = "Player 1 time left: " + timePlayer1;
+                    timePlayer1 -= 0.055625; //Det är inte exakt 60 fps. Behöver fixa tidsreduseringen
+                    DisplayTime();
+                    //Time1.Content = "Player 1 time left: " + timePlayer1;
 
                     if (timePlayer1 <= 0)
                     {
@@ -82,8 +97,9 @@ namespace Connect4
                 }
                 else
                 {
-                    timePlayer2 -= 0.03125;
-                    Time2.Content = "Player 2 time left: " + timePlayer2;
+                    timePlayer2 -= 0.055625;
+                    DisplayTime();
+                    //Time2.Content = "Player 2 time left: " + timePlayer2;
 
                     if (timePlayer2 <= 0)
                     {
@@ -91,12 +107,54 @@ namespace Connect4
                     }
                 }
             }
+            else if(reset && frame == 0)
+            {
+                Ready.Content = "Ready";
+                Console.WriteLine("Ready");
+                /*
+                Ready.Content = "Ready";
+                Console.WriteLine("Ready");
+                //Thread.Sleep(1000);
+                Ready.Content = "Set";
+                Console.WriteLine("Set");
+                //Thread.Sleep(1000);
+                Ready.Content = "Go";
+                Console.WriteLine("Go");
+                //Thread.Sleep(1000
+                gameIsOn = true;
+                reset = false;
+                */
+            }
+            else if (reset && frame == 20)
+            {
+                Ready.Content = "Set";
+                Console.WriteLine("Set");
+            }
+            else if(reset && frame == 40)
+            {
+                Ready.Content = "Go";
+                Console.WriteLine("Go");
+                gameIsOn = true;
+                reset = false;
+            }
+            
+            if(frame == 60)
+            {
+                Ready.Content = "";
+            }
+            frame++;
         }
 
         public void DisplayWinner(int player)
         {
             WinText.Content = "Player " + player + " won";
             gameIsOn = false;
+        }
+
+        public void DisplayTime()
+        {
+            Time1.Content = "Player 1 time left: " + (int)timePlayer1;
+            Time2.Content = "Player 2 time left: " + (int)timePlayer2;
         }
 
         public void DropPiece(int column)
@@ -106,6 +164,17 @@ namespace Connect4
                 if (cells[column, i] == 0)
                 {
                     cells[column, i] = (turn % 2) + 1;
+                    
+                    if ((turn % 2 + 1) == 1)
+                    {
+                        timePlayer1 += addTime;
+                        DisplayTime();
+                    }
+                    else
+                    {
+                        timePlayer2 += addTime;
+                        DisplayTime();
+                    }
 
                     RemoveBoard();
                     DrawBoard();
@@ -116,6 +185,12 @@ namespace Connect4
                         //Time1.Content = "Player {0} won";
                         DisplayWinner((turn % 2) + 1);
                     }
+                    if((turn + 1) >= 42){
+                        WinText.Content = "Draw";
+                        gameIsOn = false;
+                    }
+
+                    
 
                     turn++;
                     break;
@@ -132,9 +207,7 @@ namespace Connect4
             }
             foreach (Rectangle y in itemsToClear)
             {
-                Console.WriteLine(1 + " " + itemsToClear.Count());
                 Connect4.Children.Remove(y);
-                Console.WriteLine(2 + " " + itemsToClear.Count());
             }
         }
 
@@ -282,7 +355,7 @@ namespace Connect4
 
                     Rectangle newCell = new Rectangle
                     {
-                        Tag = "cell",
+                        Tag = "piece",
                         Height = cellSize,
                         Width = cellSize,
                         Fill = CellImage
@@ -307,10 +380,41 @@ namespace Connect4
             
         }
 
+        public void ResetGame()
+        {
+            for (int x = 0; x < boardWidth; x++)
+            {
+                for (int y = 0; y < boardHeight; y++)
+                {
+                    cells[x, y] = 0;
+                }
+            }
+
+            RemoveBoard();
+            DrawBoard();
+
+            turn = 0;
+            timePlayer1 = startTime;
+            timePlayer2 = startTime;
+            WinText.Content = "";
+            DisplayTime();
+            
+
+
+            frame = 0;
+            reset = true;
+            gameIsOn = false;
+        }
         private void HandleKeyDown(object sender, KeyEventArgs e)
         {
-            if (gameIsOn)
+            if (e.Key == Key.R) //key == r
             {
+                ResetGame();
+            }
+
+            if (gameIsOn) // 35 - 41
+            {
+                /*
                 if (!bjornMode)
                 {
                     if (!e.IsRepeat && 34 < (int)(e.Key) && (int)(e.Key) < 42)
@@ -323,6 +427,26 @@ namespace Connect4
                     if (!e.IsRepeat && 33 < (int)(e.Key) && (int)(e.Key) < 41)
                     {
                         DropPiece((int)(e.Key) - 34);
+                    }
+                }
+                */
+
+                
+                for (int i = 0; i <= 1; i++)
+                {
+                    if (!bjornMode)
+                    {
+                        if (!e.IsRepeat && 34 + 40 * i < (int)(e.Key) && (int)(e.Key) < 42 + 40 * i)
+                        {
+                            DropPiece((int)(e.Key) - (35 + 40 * i));
+                        }
+                    }
+                    else
+                    {
+                        if (!e.IsRepeat && (33 + 40 * i) < (int)(e.Key) && (int)(e.Key) < (41 + 40 * i))
+                        {
+                            DropPiece((int)(e.Key) - (34 + 40 * i));
+                        }
                     }
                 }
             }
