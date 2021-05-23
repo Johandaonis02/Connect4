@@ -13,5 +13,5 @@ C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Connect4.csproj.Gen
 C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Connect4.csproj.CoreCompileInputs.cache
 C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Connect4.exe
 C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Connect4.pdb
-C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Manu.g.cs
-C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Manu.baml
+C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Board.g.cs
+C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Board.baml

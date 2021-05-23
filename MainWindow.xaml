@@ -5,15 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Connect4"
         mc:Ignorable="d"
-        Title="Connect4" Height="800" Width="1000" KeyDown="HandleKeyDown">
+        Title="Connect4" Height="400" Width="400">
 
-    <Canvas Name="Connect4" MouseLeftButtonDown="PlacePiece" Background="White">
-        <Label FontSize="24" Name="Time1" Content="" FontWeight="ExtraBlack" Canvas.Left="10" Canvas.Top="10" />
-        <Label FontSize="24" Name="Time2" Content="" FontWeight="ExtraBlack" Canvas.Right="10" Canvas.Top="10" />
-        <Label FontSize="50" Name="WinText" Content="" FontWeight="ExtraBlack" Canvas.Left="340" Canvas.Top="10"/>
-        <Label FontSize="100" Name="Ready" Content="" FontWeight="ExtraBlack" Canvas.Left="340" Canvas.Top="10"/>
-        <Button FontSize="50" Name="Start" Click="button_Cick" Canvas.Left="443" Canvas.Top="135">Start</Button>
-        <Button FontSize="50" Name="Settings" Canvas.Left="410" Canvas.Top="227">Settings</Button>
+    <Canvas Name="Connect4" Background="White">
+        <Button FontSize="50" Name="Start" Click="button_Cick" Canvas.Left="142" Canvas.Top="84">Start</Button>
+        <Button FontSize="50" Name="Settings" Canvas.Left="106" Canvas.Top="186">Settings</Button>
     </Canvas>
 
 
