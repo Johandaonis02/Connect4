@@ -41,7 +41,7 @@ namespace Connect4
         int turn = 0;
         bool bjornMode = false; //Sätt på för att göra björn glad.
         double addTime = 1;
-        static double startTime = 7;
+        static double startTime = 30;
         bool reset = true;
 
         double timePlayer1 = startTime; //startTime
@@ -49,7 +49,20 @@ namespace Connect4
         bool gameIsOn = false;
         int frame = 0;
 
+        public void Board()
+        {
+            Console.WriteLine("test");
+            InitializeComponent();
 
+            DrawBoard();
+            gameTimer.Tick += GameEngine;
+            gameTimer.Interval = TimeSpan.FromMilliseconds(17);
+            gameTimer.Start();
+
+            DisplayTime();
+        }
+
+        /*
         public MainWindow()
         {
             InitializeComponent();
@@ -68,12 +81,15 @@ namespace Connect4
             //Time2.Content = "Player 2 time left: " + timePlayer2;
 
 
-            /*
+            
             backgroundimage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/cell.png"));
             Connect4.Background = backgroundimage;
-            */
+            
         }
+        */
         //test
+
+
         private void GameEngine(object sender, EventArgs e)
         {
             //Time1.Content = "Score: " + time;
@@ -145,6 +161,11 @@ namespace Connect4
             frame++;
         }
 
+        public int bot(int depth, int[,] board)
+        {
+
+            return 1;
+        }
         public void DisplayWinner(int player)
         {
             WinText.Content = "Player " + player + " won";
@@ -190,8 +211,6 @@ namespace Connect4
                         gameIsOn = false;
                     }
 
-                    
-
                     turn++;
                     break;
                 }
@@ -213,9 +232,6 @@ namespace Connect4
 
         public bool TestIfWon(int player)
         {
-            //Det är mycket som upprepas i denna metod så det betyder att denna metod kan optimeras.
-
-
             bool fourInARow = true;
 
             //row
@@ -398,8 +414,6 @@ namespace Connect4
             timePlayer2 = startTime;
             WinText.Content = "";
             DisplayTime();
-            
-
 
             frame = 0;
             reset = true;
@@ -450,6 +464,14 @@ namespace Connect4
                     }
                 }
             }
+        }
+
+        private void button_Cick(object sender, RoutedEventArgs e)
+        {
+            Start.Visibility = Visibility.Hidden;
+            Settings.Visibility = Visibility.Hidden;
+            Board();
+            
         }
     }
 }
