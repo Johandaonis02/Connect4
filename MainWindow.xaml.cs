@@ -23,12 +23,21 @@ namespace Connect4
     /// </summary>
     public partial class MainWindow : Window
     {
-        private void button_Cick(object sender, RoutedEventArgs e)
+        private void GoToGame(object sender, RoutedEventArgs e)
         {
             Board BoardWindow = new Board();
-            Visibility = Visibility.Hidden;
             BoardWindow.Show();
             BoardWindow.StartBoard();
+            this.Close();
+            //stäng gamla fönstret.
+        }
+
+        private void GoToSettings(object sender, RoutedEventArgs e)
+        {
+            Settings SettingsWindow = new Settings();
+            SettingsWindow.Show();
+            this.Close();
+            //stäng gamla fönstret.
         }
     }
 }

@@ -8,8 +8,8 @@
         Title="Connect4" Height="400" Width="400">
 
     <Canvas Name="Connect4" Background="White">
-        <Button FontSize="50" Name="Start" Click="button_Cick" Canvas.Left="142" Canvas.Top="84">Start</Button>
-        <Button FontSize="50" Name="Settings" Canvas.Left="106" Canvas.Top="186">Settings</Button>
+        <Button FontSize="50" Name="Start" Click="GoToGame" Canvas.Left="142" Canvas.Top="84">Start</Button>
+        <Button FontSize="50" Name="Settings" Click="GoToSettings" Canvas.Left="106" Canvas.Top="186">Settings</Button>
     </Canvas>
 
 

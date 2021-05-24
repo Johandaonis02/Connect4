@@ -37,15 +37,15 @@ namespace Connect4
         int boardHeight = 6; //Detta är samma sak som "height" från planeringen
         int boardStartX = (int)(0.5 * (1000 - 7 * 100)); // 0.5 * (width - boardWidth * cellSize);
         int boardStartY = 10;
-        int turn = 0;
         bool bjornMode = false; //Sätt på för att göra björn glad.
         double addTime = 1;
         static double startTime = 30;
-        bool reset = true;
-
         double timePlayer1 = startTime; //startTime
         double timePlayer2 = startTime; //startTime
         bool gameIsOn = false;
+        bool reset = true;
+
+        int turn = 0;
         int frame = 0;
 
         public void StartBoard()
