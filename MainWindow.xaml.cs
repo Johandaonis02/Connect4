@@ -29,7 +29,6 @@ namespace Connect4
             BoardWindow.Show();
             BoardWindow.StartBoard();
             this.Close();
-            //stäng gamla fönstret.
         }
 
         private void GoToSettings(object sender, RoutedEventArgs e)
@@ -37,7 +36,6 @@ namespace Connect4
             Settings SettingsWindow = new Settings();
             SettingsWindow.Show();
             this.Close();
-            //stäng gamla fönstret.
         }
     }
 }

@@ -26,7 +26,28 @@ namespace Connect4
 
         private void ReturnToManu(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(WidthText.Text);
+            try {
+                Board.startTime = Int16.Parse(StartTimeText.Text);
+                Board.addTime = Int16.Parse(AddTimeText.Text);
+
+
+                Board BoardWindow = new Board();
+                BoardWindow.Show();
+                BoardWindow.StartBoard();
+                this.Close();
+
+                /*
+                MainWindow MainWindow = new MainWindow();
+                MainWindow.Show();
+                this.Close();
+                */
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error");
+                throw;
+            }
+           
         }
     }
 }

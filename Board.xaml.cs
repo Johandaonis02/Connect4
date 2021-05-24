@@ -38,8 +38,8 @@ namespace Connect4
         int boardStartX = (int)(0.5 * (1000 - 7 * 100)); // 0.5 * (width - boardWidth * cellSize);
         int boardStartY = 10;
         bool bjornMode = false; //Sätt på för att göra björn glad.
-        double addTime = 1;
-        static double startTime = 30;
+        public static double addTime = 5;
+        public static double startTime = 30;
         double timePlayer1 = startTime; //startTime
         double timePlayer2 = startTime; //startTime
         bool gameIsOn = false;
