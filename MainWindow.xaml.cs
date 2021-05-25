@@ -12,9 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Threading;
-
-using System.Windows.Threading;
 
 namespace Connect4
 {
@@ -25,6 +22,7 @@ namespace Connect4
     {
         private void GoToGame(object sender, RoutedEventArgs e)
         {
+            //Left = 100;
             Board BoardWindow = new Board();
             BoardWindow.Show();
             BoardWindow.StartBoard();

@@ -21,31 +21,53 @@ namespace Connect4
     {
         public Settings()
         {
-            InitializeComponent();   
+            InitializeComponent();
+            Left = 0;
+            Top = 0;
         }
 
         private void ReturnToManu(object sender, RoutedEventArgs e)
         {
+            bool error = false;
             try {
                 Board.startTime = Int16.Parse(StartTimeText.Text);
                 Board.addTime = Int16.Parse(AddTimeText.Text);
 
+                string BjörnModeText = BjörnText.Text;
+                switch (BjörnModeText.ToLower())
+                {
+                    case "true":
+                    case "yes":
+                        Board.bjornMode = true;
+                        break;
+                    case "false":
+                    case "no":
+                    case "fuck björn":
+                        break;
+                    default: Console.WriteLine("Error");
+                        error = true;
+                        break;
+                }
 
-                Board BoardWindow = new Board();
-                BoardWindow.Show();
-                BoardWindow.StartBoard();
-                this.Close();
-
+                if (!error)
+                {
+                    Board BoardWindow = new Board();
+                    BoardWindow.Show();
+                    BoardWindow.StartBoard();
+                    this.Close();
+                }
+                
                 /*
                 MainWindow MainWindow = new MainWindow();
                 MainWindow.Show();
                 this.Close();
                 */
+                
             }
             catch (Exception)
             {
                 Console.WriteLine("Error");
-                throw;
+                //throw;
             }
            
         }

@@ -7,11 +7,14 @@
         mc:Ignorable="d"
         Title="Settings" Height="800" Width="500">
     <Grid>
-        <TextBlock FontSize="30" Margin="72,58,291.6,672.4">StartTime</TextBlock>
+        <TextBlock FontSize="30" Margin="72,58,251.6,672.4">StartTime</TextBlock>
         <ComboBox Name="StartTimeText" IsEditable="True" Margin="328,58,95.6,672.4"></ComboBox>
 
-        <TextBlock FontSize="30" Margin="72,129,291.6,601.4">AddTime</TextBlock>
+        <TextBlock FontSize="30" Margin="72,129,251.6,601.4">AddTime</TextBlock>
         <ComboBox Name="AddTimeText" IsEditable="True" Margin="328,129,95.6,601.4"></ComboBox>
+
+        <TextBlock FontSize="30" Margin="72,241,251.6,476.4">Björn mode</TextBlock>
+        <ComboBox Name="BjörnText" IsEditable="True" Margin="328,241,95.6,489.4"></ComboBox>
 
         <Button FontSize="50" Name="StartGame" Click="ReturnToManu" Canvas.Left="142" Canvas.Top="84" Margin="171,643,164.6,48.4">Start</Button>
        
