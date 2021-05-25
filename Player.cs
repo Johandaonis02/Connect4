@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Connect4
 {
-    class Player
+    public class Player
     {
+        public double time = Board.startTime; //startTime
     }
 }

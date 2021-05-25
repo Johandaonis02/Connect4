@@ -28,6 +28,9 @@ namespace Connect4
         ImageBrush backgroundimage = new ImageBrush();
         List<Rectangle> itemsToClear = new List<Rectangle>();
 
+        Player player1 = new Player();
+        Player player2 = new Player();
+
         //int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
 
         int[,] cells = new int[7, 6];
@@ -40,8 +43,7 @@ namespace Connect4
         public static bool bjornMode = false; //Sätt på för att göra björn glad.
         public static double addTime = 5;
         public static double startTime = 30;
-        double timePlayer1 = startTime; //startTime
-        double timePlayer2 = startTime; //startTime
+        
         bool gameIsOn = false;
         bool reset = true;
 
@@ -90,9 +92,9 @@ namespace Connect4
         */
         //test
 
-
         private void GameEngine(object sender, EventArgs e)
         {
+
             //Time1.Content = "Score: " + time;
             //time++;
 
@@ -103,22 +105,22 @@ namespace Connect4
             {
                 if (turn % 2 + 1 == 1)
                 {
-                    timePlayer1 -= 0.055625; //Det är inte exakt 60 fps. Behöver fixa tidsreduseringen
+                    player1.time -= 0.055625; //Det är inte exakt 60 fps. Behöver fixa tidsreduseringen
                     DisplayTime();
                     //Time1.Content = "Player 1 time left: " + timePlayer1;
 
-                    if (timePlayer1 <= 0)
+                    if (player1.time <= 0)
                     {
                         DisplayWinner(2);
                     }
                 }
                 else
                 {
-                    timePlayer2 -= 0.055625;
+                    player2.time -= 0.055625;
                     DisplayTime();
                     //Time2.Content = "Player 2 time left: " + timePlayer2;
 
-                    if (timePlayer2 <= 0)
+                    if (player2.time <= 0)
                     {
                         DisplayWinner(1);
                     }
@@ -175,8 +177,8 @@ namespace Connect4
 
         public void DisplayTime()
         {
-            Time1.Content = "Player 1 time left: " + (int)timePlayer1;
-            Time2.Content = "Player 2 time left: " + (int)timePlayer2;
+            Time1.Content = "Player 1 time left: " + (int)player1.time;
+            Time2.Content = "Player 2 time left: " + (int)player2.time;
         }
 
         public void DropPiece(int column)
@@ -189,12 +191,12 @@ namespace Connect4
 
                     if ((turn % 2 + 1) == 1)
                     {
-                        timePlayer1 += addTime;
+                        player1.time += addTime;
                         DisplayTime();
                     }
                     else
                     {
-                        timePlayer2 += addTime;
+                        player2.time += addTime;
                         DisplayTime();
                     }
 
@@ -416,8 +418,8 @@ namespace Connect4
             DrawBoard();
 
             turn = 0;
-            timePlayer1 = startTime;
-            timePlayer2 = startTime;
+            player1.time = startTime;
+            player2.time = startTime;
             WinText.Content = "";
             DisplayTime();
 
