@@ -17,3 +17,4 @@ C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Board.g.cs
 C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Board.baml
 C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Settings.g.cs
 C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Settings.baml
+C:\Users\johan.daun\source\repos\Connect4\Connect4\obj\Debug\Connect4_Content.g.cs

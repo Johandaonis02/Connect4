@@ -15,11 +15,7 @@ using System.Threading;
 
 using System.Windows.Threading;
 
-namespace Connect4
-{
-    /// <summary>
-    /// Interaction logic for Board.xaml
-    /// </summary>
+namespace Connect4 {
     public partial class Board : Window
     {
         DispatcherTimer gameTimer = new DispatcherTimer();
@@ -31,8 +27,6 @@ namespace Connect4
         Player player1 = new Player();
         Player player2 = new Player();
 
-        //int[,] cells = {{0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 }};
-
         int[,] cells = new int[7, 6];
 
         int cellSize = 100;
@@ -40,6 +34,8 @@ namespace Connect4
         int boardHeight = 6; //Detta är samma sak som "height" från planeringen
         int boardStartX = (int)(0.5 * (1000 - 7 * 100)); // 0.5 * (width - boardWidth * cellSize);
         int boardStartY = 10;
+
+        //dessa är default settings.
         public static bool bjornMode = false; //Sätt på för att göra björn glad.
         public static double addTime = 5;
         public static double startTime = 30;
@@ -65,62 +61,26 @@ namespace Connect4
             DisplayTime();
         }
 
-        /*
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            DrawBoard();
-            gameTimer.Tick += GameEngine;
-            gameTimer.Interval = TimeSpan.FromMilliseconds(17);
-            gameTimer.Start();
-            
-            DisplayTime();
-
-            
-
-
-            //Time1.Content = "Player 1 time left: " + timePlayer1;
-            //Time2.Content = "Player 2 time left: " + timePlayer2;
-
-
-            
-            backgroundimage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/cell.png"));
-            Connect4.Background = backgroundimage;
-            
-        }
-        */
-        //test
-
         private void GameEngine(object sender, EventArgs e)
         {
-
-            //Time1.Content = "Score: " + time;
-            //time++;
-
-            //RemoveBoard();
-            //DrawBoard();
-
             if (gameIsOn)
             {
                 if (turn % 2 + 1 == 1)
                 {
-                    player1.time -= 0.055625; //Det är inte exakt 60 fps. Behöver fixa tidsreduseringen
+                    player1.Time -= 0.055625; //Det är inte exakt en frame per 17 millisek. Tiden ska gå ner en steg per sekund.
                     DisplayTime();
-                    //Time1.Content = "Player 1 time left: " + timePlayer1;
 
-                    if (player1.time <= 0)
+                    if (player1.Time <= 0)
                     {
                         DisplayWinner(2);
                     }
                 }
                 else
                 {
-                    player2.time -= 0.055625;
+                    player2.Time -= 0.055625;
                     DisplayTime();
-                    //Time2.Content = "Player 2 time left: " + timePlayer2;
 
-                    if (player2.time <= 0)
+                    if (player2.Time <= 0)
                     {
                         DisplayWinner(1);
                     }
@@ -130,19 +90,6 @@ namespace Connect4
             {
                 Ready.Content = "Ready";
                 Console.WriteLine("Ready");
-                /*
-                Ready.Content = "Ready";
-                Console.WriteLine("Ready");
-                //Thread.Sleep(1000);
-                Ready.Content = "Set";
-                Console.WriteLine("Set");
-                //Thread.Sleep(1000);
-                Ready.Content = "Go";
-                Console.WriteLine("Go");
-                //Thread.Sleep(1000
-                gameIsOn = true;
-                reset = false;
-                */
             }
             else if (reset && frame == 20)
             {
@@ -164,11 +111,6 @@ namespace Connect4
             frame++;
         }
 
-        public int bot(int depth, int[,] board)
-        {
-
-            return 1;
-        }
         public void DisplayWinner(int player)
         {
             WinText.Content = "Player " + player + " won";
@@ -177,8 +119,8 @@ namespace Connect4
 
         public void DisplayTime()
         {
-            Time1.Content = "Player 1 time left: " + (int)player1.time;
-            Time2.Content = "Player 2 time left: " + (int)player2.time;
+            Time1.Content = "Player 1 time left: " + (int)player1.Time;
+            Time2.Content = "Player 2 time left: " + (int)player2.Time;
         }
 
         public void DropPiece(int column)
@@ -189,14 +131,32 @@ namespace Connect4
                 {
                     cells[column, i] = (turn % 2) + 1;
 
+                    int drop = (int)(3*rand.NextDouble());
+
+                    switch (drop)
+                    {
+                        case 0:
+                            player.Open(new Uri("../../sound/drop1.mp3", UriKind.RelativeOrAbsolute));
+                            break;
+                        case 1:
+                            player.Open(new Uri("../../sound/drop2.mp3", UriKind.RelativeOrAbsolute));
+                            break;
+                        case 2:
+                            player.Open(new Uri("../../sound/drop3.mp3", UriKind.RelativeOrAbsolute));
+                            break;
+                    }
+
+                    player.Play();
+
+
                     if ((turn % 2 + 1) == 1)
                     {
-                        player1.time += addTime;
+                        player1.Time += addTime;
                         DisplayTime();
                     }
                     else
                     {
-                        player2.time += addTime;
+                        player2.Time += addTime;
                         DisplayTime();
                     }
 
@@ -205,8 +165,6 @@ namespace Connect4
 
                     if (TestIfWon((turn % 2) + 1))
                     {
-                        //string bingbong = "Player " + ((turn % 2) + 1) + " won";
-                        //Time1.Content = "Player {0} won";
                         DisplayWinner((turn % 2) + 1);
                     }
                     if ((turn + 1) >= 42)
@@ -368,14 +326,17 @@ namespace Connect4
                 for (int y = 0; y < boardHeight; y++)
                 {
                     ImageBrush CellImage = new ImageBrush();
-                    if (cells[x, y] == 1) // kanske ska göra en switch case
+                    switch (cells[x, y])
                     {
-                        CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/bluepiece.png"));
-                    }
-                    else if (cells[x, y] == 2)
-                    {
-                        CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/redpiece.png"));
-                    }
+                        case 1:
+                            CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/bluepiece.png"));
+                            break;
+                        case 2:
+                            CellImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/pictures/redpiece.png"));
+                            break;
+                        default:
+                            break;
+                    }                    
 
                     Rectangle newCell = new Rectangle
                     {
@@ -399,7 +360,6 @@ namespace Connect4
             //Ska lägga till så man kan klicka ut bitar istället för att klicka på siffor.
 
             //var point = e.GetPosition();
-
             //Console.WriteLine(e.GetPosition);
 
         }
@@ -418,8 +378,8 @@ namespace Connect4
             DrawBoard();
 
             turn = 0;
-            player1.time = startTime;
-            player2.time = startTime;
+            player1.Time = startTime;
+            player2.Time = startTime;
             WinText.Content = "";
             DisplayTime();
 

@@ -22,7 +22,6 @@ namespace Connect4
     {
         private void GoToGame(object sender, RoutedEventArgs e)
         {
-            //Left = 100;
             Board BoardWindow = new Board();
             BoardWindow.Show();
             BoardWindow.StartBoard();

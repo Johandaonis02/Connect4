@@ -38,10 +38,13 @@ namespace Connect4
                 {
                     case "true":
                     case "yes":
+                    case "ja":
                         Board.bjornMode = true;
                         break;
                     case "false":
                     case "no":
+                    case "nej":
+                    case "nein":
                     case "fuck björn":
                         break;
                     default: Console.WriteLine("Error");
@@ -56,13 +59,6 @@ namespace Connect4
                     BoardWindow.StartBoard();
                     this.Close();
                 }
-                
-                /*
-                MainWindow MainWindow = new MainWindow();
-                MainWindow.Show();
-                this.Close();
-                */
-                
             }
             catch (Exception)
             {
