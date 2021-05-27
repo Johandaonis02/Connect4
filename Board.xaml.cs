@@ -46,11 +46,14 @@ namespace Connect4 {
         int turn = 0;
         int frame = 0;
 
+        public static bool botStart = false;
+        public static bool botActive = false;
+        public static int maxDepth = 6;
+
         public void StartBoard()
         {
             Left = 0;
             Top = 0;
-            Console.WriteLine("test");
             InitializeComponent();
 
             DrawBoard();
@@ -130,7 +133,7 @@ namespace Connect4 {
                 if (cells[column, i] == 0)
                 {
                     cells[column, i] = (turn % 2) + 1;
-
+                    
                     int drop = (int)(3*rand.NextDouble());
 
                     switch (drop)
@@ -174,10 +177,100 @@ namespace Connect4 {
                     }
 
                     turn++;
+
+                    if (botActive)
+                    {
+                        botPlacePiece();
+                    }
                     break;
                 }
             }
+        }
 
+        public void botPlacePiece()
+        {
+            int best;
+
+            if (turn % 2 == 1)
+            {
+                best = 10000;
+            }
+            else
+            {
+                best = -10000;
+            }
+
+            int columnBotPlace = -1;
+
+            //Console.WriteLine(turn);
+
+            for (int columnBot = 0; columnBot < 7; columnBot++)
+            {
+                for (int rowBot = 0; rowBot < boardHeight; rowBot++)
+                {
+                    if (cells[columnBot, rowBot] == 0)
+                    {
+                        if (turn % 2 == 0)
+                        {
+                            cells[columnBot, rowBot] = 1;
+                        }
+                        else
+                        {
+                            cells[columnBot, rowBot] = 2;
+                        }
+
+                        //Console.Write(bot(turn + 1, turn + 1) + " ");
+                        int c = bot(turn + 1, turn + 1);
+                        //Console.Write(c + " ");
+
+                        if (turn % 2 == 1)
+                        {
+                            if (c < best || (c == best && Math.Abs(columnBotPlace - 3) > Math.Abs(columnBot - 3)))
+                            {
+                                best = c;
+                                columnBotPlace = columnBot;
+                            }
+                        }
+                        else
+                        {
+                            if (c > best || (c == best && Math.Abs(columnBotPlace - 3) > Math.Abs(columnBot - 3)))
+                            {
+                                best = c;
+                                columnBotPlace = columnBot;
+                            }
+                        }
+
+                        cells[columnBot, rowBot] = 0;
+                        break;
+                    }
+                }
+            }
+
+            if ((turn % 2 == 0 && botStart) || (turn % 2 == 1 && !botStart))
+            {
+                for (int i = 0; i < boardHeight; i++)
+                {
+                    if (cells[columnBotPlace, i] == 0)
+                    {
+                        cells[columnBotPlace, i] = (turn % 2) + 1;
+
+                        RemoveBoard();
+                        DrawBoard();
+
+                        if (TestIfWon((turn % 2) + 1))
+                        {
+                            DisplayWinner((turn % 2) + 1);
+                        }
+                        if ((turn + 1) >= 42)
+                        {
+                            WinText.Content = "Draw";
+                            gameIsOn = false;
+                        }
+                        turn++;
+                        break;
+                    }
+                }
+            }
 
         }
 
@@ -192,6 +285,19 @@ namespace Connect4 {
             {
                 Connect4.Children.Remove(y);
             }
+        }
+
+        public void displayBot()
+        {
+            for (int y = boardHeight - 1; y >= 0; y--)
+            {
+                for (int x = 0; x < boardWidth; x++)
+                {
+                    Console.Write(cells[x, y] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
         }
 
         public bool TestIfWon(int player)
@@ -400,6 +506,7 @@ namespace Connect4 {
                 {
                     if (!bjornMode)
                     {
+                        //1 - 7
                         if (!e.IsRepeat && 34 + 40 * i < (int)(e.Key) && (int)(e.Key) < 42 + 40 * i)
                         {
                             DropPiece((int)(e.Key) - (35 + 40 * i));
@@ -407,12 +514,90 @@ namespace Connect4 {
                     }
                     else
                     {
+                        //0 - 6
                         if (!e.IsRepeat && (33 + 40 * i) < (int)(e.Key) && (int)(e.Key) < (41 + 40 * i))
                         {
                             DropPiece((int)(e.Key) - (34 + 40 * i));
                         }
                     }
                 }
+            }
+        }
+
+
+
+        //bot stuff
+
+        public int bot(int depth, int startDepth)
+        {
+            //displayBot();
+
+            int maxRound = 42;
+
+            if (depth >= maxDepth + startDepth && !TestIfWon(1) && !TestIfWon(2))
+            {
+                return (0);
+            }
+
+            int best;
+
+            if (depth % 2 == 0)
+            {
+                if (TestIfWon(2))
+                {
+                    return (depth - maxRound - 1);
+                }
+
+                best = -1337;
+
+                for (int column = 0; column < 7; column++)
+                {
+                    for (int row = 0; row < boardHeight; row++)
+                    {
+                        if (cells[column, row] == 0)
+                        {
+                            cells[column, row] = 1;
+                            int c = bot(depth + 1, startDepth);
+                            if (c > best)
+                            {
+                                best = c;
+                            }
+                            cells[column, row] = 0;
+                            break;
+                        }
+                    }
+                }
+                return (best);
+            }
+            else
+            {
+                if (TestIfWon(1))
+                {
+                    return (maxRound + 1 - depth);
+                }
+
+                best = 1337;
+
+                for (int column = 0; column < 7; column++)
+                {
+                    for (int row = 0; row < boardHeight; row++)
+                    {
+                        if (cells[column, row] == 0)
+                        {
+
+                            cells[column, row] = 2;
+                            //display(cell);
+                            int c = bot(depth + 1, startDepth);
+                            if (c < best)
+                            {
+                                best = c; //bot(depth + 1, cell)
+                            }
+                            cells[column, row] = 0;
+                            break;
+                        }
+                    }
+                }
+                return (best);
             }
         }
     }

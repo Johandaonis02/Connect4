@@ -8,13 +8,19 @@
         Title="Settings" Height="800" Width="500">
     <Grid>
         <TextBlock FontSize="30" Margin="72,58,251.6,672.4">StartTime</TextBlock>
-        <TextBox Name="StartTimeText" Margin="328,58,95.6,672.4">5</TextBox>
+        <TextBox Name="StartTimeText" Margin="328,58,95.6,672.4">30</TextBox>
 
         <TextBlock FontSize="30" Margin="72,129,251.6,601.4">AddTime</TextBlock>
-        <TextBox Name="AddTimeText" Margin="328,129,95.6,601.4">30</TextBox>
+        <TextBox Name="AddTimeText" Margin="328,129,95.6,601.4">5</TextBox>
 
         <TextBlock FontSize="30" Margin="72,241,251.6,476.4">Björn mode</TextBlock>
-        <ComboBox Name="BjörnText" IsEditable="True" Margin="328,241,95.6,489.4">yes</ComboBox>
+        <ComboBox Name="BjörnText" IsEditable="True" Margin="328,241,95.6,489.4">No</ComboBox>
+
+        <TextBlock FontSize="30" Margin="72,408,251.6,309.4">BotStart</TextBlock>
+        <ComboBox Name="BotStartText" IsEditable="True" Margin="328,408,95.6,322.4">No</ComboBox>
+
+        <TextBlock FontSize="30" Margin="72,350,251.6,367.4">BotActive</TextBlock>
+        <ComboBox Name="BotActiveText" IsEditable="True" Margin="328,350,95.6,380.4">No</ComboBox>
 
         <Button FontSize="50" Name="StartGame" Click="ReturnToManu" Canvas.Left="142" Canvas.Top="84" Margin="171,643,164.6,48.4">Start</Button>
        

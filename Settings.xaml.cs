@@ -46,11 +46,56 @@ namespace Connect4
                     case "nej":
                     case "nein":
                     case "fuck björn":
+                        Board.bjornMode = false;
                         break;
                     default: Console.WriteLine("Error");
                         error = true;
                         break;
                 }
+
+                string ActiveText = BotActiveText.Text;
+                switch (ActiveText.ToLower())
+                {
+                    case "true":
+                    case "yes":
+                    case "ja":
+                        Board.botActive = true;
+                        break;
+                    case "false":
+                    case "no":
+                    case "nej":
+                    case "nein":
+                    case "fuck björn":
+                        Board.botActive = false;
+                        break;
+                    default:
+                        Console.WriteLine("Error");
+                        error = true;
+                        break;
+                }
+
+                string FirstText = BotStartText.Text;
+                switch (FirstText.ToLower())
+                {
+                    case "true":
+                    case "yes":
+                    case "ja":
+                        Board.botStart = true;
+                        break;
+                    case "false":
+                    case "no":
+                    case "nej":
+                    case "nein":
+                    case "fuck björn":
+                        Board.botStart = false;
+                        break;
+                    default:
+                        Console.WriteLine("Error");
+                        error = true;
+                        break;
+                }
+
+
 
                 if (!error)
                 {
