@@ -16,11 +16,13 @@
         <TextBlock FontSize="30" Margin="72,241,251.6,476.4">Björn mode</TextBlock>
         <ComboBox Name="BjörnText" IsEditable="True" Margin="328,241,95.6,489.4">No</ComboBox>
 
+        <TextBlock FontSize="30" Margin="72,350,251.6,367.4">BotActive</TextBlock>
+        <ComboBox Name="BotActiveText" IsEditable="True" Margin="328,350,95.6,380.4">No</ComboBox>
+        
         <TextBlock FontSize="30" Margin="72,408,251.6,309.4">BotStart</TextBlock>
         <ComboBox Name="BotStartText" IsEditable="True" Margin="328,408,95.6,322.4">No</ComboBox>
 
-        <TextBlock FontSize="30" Margin="72,350,251.6,367.4">BotActive</TextBlock>
-        <ComboBox Name="BotActiveText" IsEditable="True" Margin="328,350,95.6,380.4">No</ComboBox>
+        
 
         <Button FontSize="50" Name="StartGame" Click="ReturnToManu" Canvas.Left="142" Canvas.Top="84" Margin="171,643,164.6,48.4">Start</Button>
        

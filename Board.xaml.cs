@@ -48,7 +48,7 @@ namespace Connect4 {
 
         public static bool botStart = false;
         public static bool botActive = false;
-        public static int maxDepth = 6;
+        public static int maxDepth = 10;
 
         public void StartBoard()
         {
@@ -219,7 +219,7 @@ namespace Connect4 {
                         }
 
                         //Console.Write(bot(turn + 1, turn + 1) + " ");
-                        int c = bot(turn + 1, turn + 1);
+                        int c = bot(turn + 1, turn + 1, -1000000, 1000000);
                         //Console.Write(c + " ");
 
                         if (turn % 2 == 1)
@@ -527,7 +527,7 @@ namespace Connect4 {
 
         //bot stuff
 
-        public int bot(int depth, int startDepth)
+        public int bot(int depth, int startDepth, int alpha, int beta)
         {
             //displayBot();
 
@@ -556,12 +556,25 @@ namespace Connect4 {
                         if (cells[column, row] == 0)
                         {
                             cells[column, row] = 1;
+
+                            int a = bot(depth + 1, startDepth, alpha, beta);
+                            best = Math.Max(best, a);
+                            alpha = Math.Max(alpha, a);
+                            
+                            /*
                             int c = bot(depth + 1, startDepth);
                             if (c > best)
                             {
                                 best = c;
                             }
+                            */
+
                             cells[column, row] = 0;
+
+                            if (beta <= alpha)
+                            {
+                                column = 100;
+                            }
                             break;
                         }
                     }
@@ -586,12 +599,25 @@ namespace Connect4 {
 
                             cells[column, row] = 2;
                             //display(cell);
+
+                            int a = bot(depth + 1, startDepth, alpha, beta);
+                            best = Math.Min(best, a);
+                            beta = Math.Min(beta, a);
+                            
+
+                            /*
                             int c = bot(depth + 1, startDepth);
                             if (c < best)
                             {
                                 best = c; //bot(depth + 1, cell)
                             }
+                            */
                             cells[column, row] = 0;
+
+                            if (beta <= alpha)
+                            {
+                                column = 100;
+                            }
                             break;
                         }
                     }
