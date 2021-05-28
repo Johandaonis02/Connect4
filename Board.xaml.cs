@@ -48,8 +48,10 @@ namespace Connect4 {
 
         public static bool botStart = false;
         public static bool botActive = false;
-        public static int maxDepth = 10;
+        //public static int maxDepth = 9;
+        int[] maxDepthArray = {1000,1000,1000,1000,1000,13,11,9};
 
+        int[] columnCheckOrder = { 3, 2, 4, 1, 5, 0, 6};
         public void StartBoard()
         {
             Left = 0;
@@ -181,6 +183,7 @@ namespace Connect4 {
                     }
 
                     turn++;
+
                     break;
                 }
             }
@@ -218,9 +221,7 @@ namespace Connect4 {
                             cells[columnBot, rowBot] = 2;
                         }
 
-                        //Console.Write(bot(turn + 1, turn + 1) + " ");
-                        int c = bot(turn + 1, turn + 1, -1000000, 1000000);
-                        //Console.Write(c + " ");
+                        int c = bot(turn + 1, maxDepthArray[7 - HowManyEmptyColumns()], turn + 1, -1000000, 1000000);
 
                         if (turn % 2 == 1)
                         {
@@ -271,6 +272,19 @@ namespace Connect4 {
                 }
             }
 
+        }
+
+        public int HowManyEmptyColumns()
+        {
+            int returnValue = 0;
+            for (int x = 0; x < boardWidth; x++)
+            {
+                if(cells[x, boardHeight-1] != 0)
+                {
+                    returnValue++;
+                }
+            }
+            return (returnValue);
         }
 
         //Denna metod tar barnen och först lägger dem i en kista och sedan dödar dem en i taget. 
@@ -523,17 +537,12 @@ namespace Connect4 {
             }
         }
 
-
-
         //bot stuff
-
-        public int bot(int depth, int startDepth, int alpha, int beta)
+        public int bot(int depth, int maxDepth, int startDepth, int alpha, int beta)
         {
-            //displayBot();
-
             int maxRound = 42;
 
-            if (depth >= maxDepth + startDepth && !TestIfWon(1) && !TestIfWon(2))
+            if (((depth >= maxRound) || (depth >= maxDepth + startDepth)) && !TestIfWon(1) && !TestIfWon(2))
             {
                 return (0);
             }
@@ -553,11 +562,11 @@ namespace Connect4 {
                 {
                     for (int row = 0; row < boardHeight; row++)
                     {
-                        if (cells[column, row] == 0)
+                        if (cells[columnCheckOrder[column], row] == 0)
                         {
-                            cells[column, row] = 1;
+                            cells[columnCheckOrder[column], row] = 1;
 
-                            int a = bot(depth + 1, startDepth, alpha, beta);
+                            int a = bot(depth + 1, maxDepth, startDepth, alpha, beta);
                             best = Math.Max(best, a);
                             alpha = Math.Max(alpha, a);
                             
@@ -569,7 +578,7 @@ namespace Connect4 {
                             }
                             */
 
-                            cells[column, row] = 0;
+                            cells[columnCheckOrder[column], row] = 0;
 
                             if (beta <= alpha)
                             {
@@ -594,13 +603,11 @@ namespace Connect4 {
                 {
                     for (int row = 0; row < boardHeight; row++)
                     {
-                        if (cells[column, row] == 0)
+                        if (cells[columnCheckOrder[column], row] == 0)
                         {
+                            cells[columnCheckOrder[column], row] = 2;
 
-                            cells[column, row] = 2;
-                            //display(cell);
-
-                            int a = bot(depth + 1, startDepth, alpha, beta);
+                            int a = bot(depth + 1, maxDepth, startDepth, alpha, beta);
                             best = Math.Min(best, a);
                             beta = Math.Min(beta, a);
                             
@@ -612,7 +619,7 @@ namespace Connect4 {
                                 best = c; //bot(depth + 1, cell)
                             }
                             */
-                            cells[column, row] = 0;
+                            cells[columnCheckOrder[column], row] = 0;
 
                             if (beta <= alpha)
                             {

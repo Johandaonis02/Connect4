@@ -65,7 +65,6 @@ namespace Connect4
                     case "no":
                     case "nej":
                     case "nein":
-                    case "fuck björn":
                         Board.botActive = false;
                         break;
                     default:
@@ -86,7 +85,6 @@ namespace Connect4
                     case "no":
                     case "nej":
                     case "nein":
-                    case "fuck björn":
                         Board.botStart = false;
                         break;
                     default:
