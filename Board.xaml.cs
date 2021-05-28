@@ -68,7 +68,11 @@ namespace Connect4 {
         {
             if (gameIsOn)
             {
-                if (turn % 2 + 1 == 1)
+                if (botActive && (((turn % 2 == 1) && !botStart) || ((turn % 2 == 0) && botStart)))
+                {
+                    botPlacePiece();
+                }
+                if ((turn % 2 + 1 == 1) && !botActive)
                 {
                     player1.Time -= 0.055625; //Det är inte exakt en frame per 17 millisek. Tiden ska gå ner en steg per sekund.
                     DisplayTime();
@@ -78,7 +82,7 @@ namespace Connect4 {
                         DisplayWinner(2);
                     }
                 }
-                else
+                else if(!botActive)
                 {
                     player2.Time -= 0.055625;
                     DisplayTime();
@@ -152,12 +156,12 @@ namespace Connect4 {
                     player.Play();
 
 
-                    if ((turn % 2 + 1) == 1)
+                    if (((turn % 2 + 1) == 1) && !botActive)
                     {
                         player1.Time += addTime;
                         DisplayTime();
                     }
-                    else
+                    else if(!botActive)
                     {
                         player2.Time += addTime;
                         DisplayTime();
@@ -177,11 +181,6 @@ namespace Connect4 {
                     }
 
                     turn++;
-
-                    if (botActive)
-                    {
-                        botPlacePiece();
-                    }
                     break;
                 }
             }
