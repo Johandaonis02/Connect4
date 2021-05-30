@@ -72,7 +72,7 @@ namespace Connect4 {
             {
                 if (botActive && (((turn % 2 == 1) && !botStart) || ((turn % 2 == 0) && botStart)))
                 {
-                    botPlacePiece();
+                    BotPlacePiece();
                 }
                 if ((turn % 2 + 1 == 1) && !botActive)
                 {
@@ -189,7 +189,7 @@ namespace Connect4 {
             }
         }
 
-        public void botPlacePiece()
+        public void BotPlacePiece()
         {
             int best;
 
@@ -221,7 +221,7 @@ namespace Connect4 {
                             cells[columnBot, rowBot] = 2;
                         }
 
-                        int c = bot(turn + 1, maxDepthArray[7 - HowManyEmptyColumns()], turn + 1, -1000000, 1000000);
+                        int c = Bot(turn + 1, maxDepthArray[7 - HowManyEmptyColumns()], turn + 1, -1000000, 1000000);
 
                         if (turn % 2 == 1)
                         {
@@ -300,7 +300,7 @@ namespace Connect4 {
             }
         }
 
-        public void displayBot()
+        public void DisplayBot()
         {
             for (int y = boardHeight - 1; y >= 0; y--)
             {
@@ -538,7 +538,7 @@ namespace Connect4 {
         }
 
         //bot stuff
-        public int bot(int depth, int maxDepth, int startDepth, int alpha, int beta)
+        public int Bot(int depth, int maxDepth, int startDepth, int alpha, int beta)
         {
             int maxRound = 42;
 
@@ -566,7 +566,7 @@ namespace Connect4 {
                         {
                             cells[columnCheckOrder[column], row] = 1;
 
-                            int a = bot(depth + 1, maxDepth, startDepth, alpha, beta);
+                            int a = Bot(depth + 1, maxDepth, startDepth, alpha, beta);
                             best = Math.Max(best, a);
                             alpha = Math.Max(alpha, a);
                             
@@ -607,7 +607,7 @@ namespace Connect4 {
                         {
                             cells[columnCheckOrder[column], row] = 2;
 
-                            int a = bot(depth + 1, maxDepth, startDepth, alpha, beta);
+                            int a = Bot(depth + 1, maxDepth, startDepth, alpha, beta);
                             best = Math.Min(best, a);
                             beta = Math.Min(beta, a);
                             
