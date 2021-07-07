@@ -459,7 +459,7 @@ namespace Connect4 {
 
                     Rectangle newCell = new Rectangle
                     {
-                        Tag = "piece",
+                        Tag = x + "" + y,
                         Height = cellSize,
                         Width = cellSize,
                         Fill = CellImage
@@ -477,9 +477,11 @@ namespace Connect4 {
         private void PlacePiece(object sender, MouseButtonEventArgs e)
         {
             //Ska lägga till så man kan klicka ut bitar istället för att klicka på siffor.
-
-            //var point = e.GetPosition();
-            //Console.WriteLine(e.GetPosition);
+           
+            Rectangle actRec = (Rectangle)e.OriginalSource;
+            String cords = (String)actRec.Tag;
+            DropPiece(((int)cords[0]) - 48);
+            //Console.WriteLine((int)cords[0]);
 
         }
 
